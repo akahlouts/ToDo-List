@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#542ACC">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:layout_marginBottom="45dp"
+            android:gravity="center_horizontal"
+            android:lineHeight="34sp"
+            android:text="Create profile to\n start your first\n ToDo List"
+            android:textAlignment="center"
+            android:textColor="#FFFF"
+            android:textSize="28sp" />
+
+        <EditText
+            android:layout_width="360dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/edit_text"
+            android:hint="Your Name"
+            android:inputType="textPersonName"
+            android:paddingLeft="20dp"
+            android:textColor="#FFFF"
+            android:textColorHint="#80FFFFFF" />
+
+        <EditText
+            android:layout_width="360dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/edit_text"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingLeft="20dp"
+            android:textColor="#FFFF"
+            android:textColorHint="#80FFFFFF" />
+
+        <EditText
+            android:layout_width="360dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/edit_text"
+            android:hint="Your Email Address"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="20dp"
+            android:textColor="#FFFF"
+            android:textColorHint="#80FFFFFF" />
+
+        <Button
+            android:layout_width="360dp"
+            android:layout_height="65dp"
+            android:background="@drawable/btn_create"
+            android:lineHeight="20sp"
+            android:onClick="Create"
+            android:text="Create your profile"
+            android:textAllCaps="false"
+            android:textColor="#FFFF"
+            android:textFontWeight="700"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:lineHeight="17sp"
+            android:text="Already have an account?"
+            android:textColor="#66FFFFFF"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textView_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="30dp"
+            android:text="Log In"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>
