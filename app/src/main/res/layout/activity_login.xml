@@ -7,47 +7,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="70dp"
             android:layout_marginBottom="45dp"
-            android:gravity="center_horizontal"
-            android:lineHeight="34sp"
-            android:text="Create profile to\n start your first\n ToDo List"
-            android:textAlignment="center"
+            android:lineHeight="28sp"
+            android:text="Welcome back!"
             android:textColor="#FFFF"
-            android:textSize="28sp" />
+            android:textSize="27sp" />
 
         <EditText
             android:layout_width="360dp"
             android:layout_height="60dp"
-            android:layout_marginBottom="25dp"
-            android:background="@drawable/edit_text"
-            android:hint="Your Name"
-            android:inputType="textPersonName"
-            android:paddingLeft="20dp"
-            android:textColor="#FFFF"
-            android:textColorHint="#80FFFFFF" />
-
-        <EditText
-            android:layout_width="360dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="25dp"
-            android:background="@drawable/edit_text"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingLeft="20dp"
-            android:textColor="#FFFF"
-            android:textColorHint="#80FFFFFF" />
-
-        <EditText
-            android:layout_width="360dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/edit_text"
             android:hint="Your Email Address"
             android:inputType="textEmailAddress"
@@ -55,37 +31,55 @@
             android:textColor="#FFFF"
             android:textColorHint="#80FFFFFF" />
 
+        <EditText
+            android:layout_width="360dp"
+            android:layout_height="60dp"
+            android:background="@drawable/edit_text"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingLeft="20dp"
+            android:textColor="#FFFF"
+            android:textColorHint="#80FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="30dp"
+            android:text="Forgot your password?"
+            android:textColor="#FFFF" />
+
         <Button
             android:layout_width="360dp"
             android:layout_height="65dp"
+            android:layout_marginTop="100dp"
             android:background="@drawable/btn_create"
             android:lineHeight="20sp"
-            android:onClick="Create"
-            android:text="Create your profile"
+            android:text="Log in"
             android:textAllCaps="false"
             android:textColor="#FFFF"
             android:textFontWeight="700"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="160dp"
             android:lineHeight="17sp"
-            android:text="Already have an account?"
+            android:text="Don’t have an account?"
             android:textColor="#66FFFFFF"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/textView_login"
+            android:id="@+id/textView_create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="30dp"
-            android:text="Log In"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
+            android:text="Create your profile"
+            android:textColor="#FFFF"
             android:textStyle="bold" />
+
+
     </LinearLayout>
+
 </ScrollView>
