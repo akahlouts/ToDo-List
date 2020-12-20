@@ -6,7 +6,6 @@
     android:background="#542ACC"
     tools:context=".MainActivity">
 
-
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
@@ -19,8 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo"
         android:layout_centerInParent="true"
-        android:text="Things ToDo"
         android:layout_marginTop="20dp"
+        android:text="Things ToDo"
         android:textColor="#FFFF"
         android:textSize="24sp" />
 
@@ -28,14 +27,14 @@
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next"
-        android:textColor="#FFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:text="@string/next"
+        android:textColor="#FFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

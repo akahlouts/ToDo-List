@@ -9,8 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SignupActivity extends AppCompatActivity {
-
-    TextView textView_login;
+    private TextView textView_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,14 +19,11 @@ public class SignupActivity extends AppCompatActivity {
         textView_login = findViewById(R.id.textView_login);
         textView_login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SignupActivity.this,LoginActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
             }
         });
+
     }
 
-
-    public void Create(View view) {
-    }
 }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ToDo-List</string>
     <string name="next"><u>next</u></string>
+    <string name="logout"><u>Logout</u></string>
 </resources>

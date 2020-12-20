@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_id"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#542ACC"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/addList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Enter List Name :"
+                android:textColor="#FFFF"
+                android:textSize="18sp"
+                android:textStyle="italic" />
+
+            <EditText
+                android:id="@+id/aListItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/addList"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/edit_text"
+                android:hint="List Name"
+                android:padding="18dp"
+                android:textColor="#FFFF"
+                android:textColorHint="#80FFFFFF"/>
+
+            <Button
+                android:id="@+id/btn_saveList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/aListItem"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/btn_create"
+                android:text="save"
+                android:textColor="#FFFF"
+                android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+</LinearLayout>
