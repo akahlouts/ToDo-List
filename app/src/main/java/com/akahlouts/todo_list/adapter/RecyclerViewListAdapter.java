@@ -50,7 +50,7 @@ public class RecyclerViewListAdapter extends Adapter<RecyclerViewListAdapter.Vie
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView itemListName;
 
         public ViewHolder(@NonNull View itemView, Context ctx) {
@@ -59,18 +59,20 @@ public class RecyclerViewListAdapter extends Adapter<RecyclerViewListAdapter.Vie
 
             itemListName = itemView.findViewById(R.id.listName);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    ListItem item = itemList.get(position);
+                    Intent intent = new Intent(context, TaskActivity.class);
+                    intent.putExtra("listName", item.getListName());
+
+                    context.startActivity(intent);
+                }
+            });
+
         }
 
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            ListItem item = itemList.get(position);
-            Intent intent = new Intent(context, TaskActivity.class);
-            intent.putExtra("listName", item.getListName());
-
-            context.startActivity(intent);
-
-        }
 
     }
 
