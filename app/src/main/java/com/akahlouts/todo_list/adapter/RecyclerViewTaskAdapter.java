@@ -1,6 +1,7 @@
 package com.akahlouts.todo_list.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akahlouts.todo_list.R;
+import com.akahlouts.todo_list.ViewTaskActivity;
 import com.akahlouts.todo_list.model.Task;
 
 import java.util.List;
@@ -36,9 +38,6 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewTaskAdapter.ViewHolder viewHolder, int position) {
-//        Task task = taskList.get(position);
-//        viewHolder.checkBox.setText(task.getTaskName());
-
         viewHolder.setData(taskList.get(position));
         Task taskEntity = taskList.get(position);
         if (taskEntity.getIsChecked()) {
@@ -68,18 +67,30 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public CheckBox checkBox;
-        public String taskName;
 
         public ViewHolder(@NonNull View itemView, Context ctx) {
             super(itemView);
             context = ctx;
 
             checkBox = itemView.findViewById(R.id.checkBox);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Task task = taskList.get(position);
+                    Intent intent = new Intent(context, ViewTaskActivity.class);
+                    intent.putExtra("taskName", task.getTaskName());
+
+                    context.startActivity(intent);
+                }
+            });
         }
 
         public void setData(Task task) {
             checkBox.setText(task.getTaskName());
             checkBox.setSelected(task.getIsChecked());
         }
+
     }
 }

@@ -35,6 +35,7 @@ public class TaskActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private LayoutInflater inflater;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +74,43 @@ public class TaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        TextView textview_deleteList = findViewById(R.id.textview_deleteList);
+        textview_deleteList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteItem();
+            }
+        });
+    }
+
+    private void deleteItem() {
+
+        builder = new AlertDialog.Builder(this);
+
+        inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.confirmation_pop, null);
+
+        Button noButton = view.findViewById(R.id.conf_no_button);
+        Button yesButton = view.findViewById(R.id.conf_yes_button);
+
+        builder.setView(view);
+        alertDialog = builder.create();
+        alertDialog.show();
+
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
             }
         });
     }
