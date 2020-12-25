@@ -86,7 +86,7 @@
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textColor="#FFFF"
-        android:textSize="22sp" />
+        android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewList"

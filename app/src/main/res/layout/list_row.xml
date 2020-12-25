@@ -31,7 +31,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="listName"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textColor="#000000"/>
 
             <TextView
                 android:id="@+id/taskNumber"
@@ -41,7 +42,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:text="0 tasks"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textColor="#80000000"/>
 
         </RelativeLayout>
 

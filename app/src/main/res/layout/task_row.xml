@@ -23,15 +23,16 @@
 
             <CheckBox
                 android:id="@+id/checkBox"
+                style="@style/CustomCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:onClick="onCheckboxClicked"
                 android:text=" Things ToDo"
-                android:textSize="20sp"
-                style="@style/CustomCheckbox"
-                android:layout_centerVertical="true" />
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

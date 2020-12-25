@@ -69,8 +69,8 @@ public class TaskActivity extends AppCompatActivity {
             }
         });
 
-        TextView back = findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
+        TextView back_task = findViewById(R.id.back_task);
+        back_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
