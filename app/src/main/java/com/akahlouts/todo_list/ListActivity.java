@@ -89,7 +89,7 @@ public class ListActivity extends AppCompatActivity {
         String newItemNOL = itemListName.getText().toString().trim();
 
         item.setListName(newItemNOL);
-        itemList.add(0,item);
+        itemList.add(0, item);
         recyclerViewListAdapter.notifyItemInserted(0);
         recyclerViewList.smoothScrollToPosition(0);
 
@@ -163,7 +163,7 @@ public class ListActivity extends AppCompatActivity {
                             //update our item
                             newItem.setListName(itemListName.getText().toString());
 
-                            if (!itemListName.getText().toString().isEmpty()){
+                            if (!itemListName.getText().toString().isEmpty()) {
 //                                recyclerViewListAdapter.notifyItemChanged(position,newItem);
 
                                 itemList.remove(newItem);
@@ -173,9 +173,9 @@ public class ListActivity extends AppCompatActivity {
                                 recyclerViewListAdapter.notifyItemInserted(position);
                                 alertDialog.dismiss();
 
-                                Snackbar.make(view,"Updated done",Snackbar.LENGTH_SHORT).show();
-                            }else {
-                                Snackbar.make(view,"Field Empty",Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "Updated done", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar.make(view, "Field Empty", Snackbar.LENGTH_SHORT).show();
                             }
                         }
                     });
