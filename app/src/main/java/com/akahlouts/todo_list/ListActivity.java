@@ -1,10 +1,16 @@
 package com.akahlouts.todo_list;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,13 +19,23 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.akahlouts.todo_list.adapter.RecyclerViewListAdapter;
-import com.akahlouts.todo_list.model.ListItem;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import adapter.RecyclerViewListAdapter;
+import model.ListItem;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -29,27 +45,75 @@ public class ListActivity extends AppCompatActivity {
     private EditText itemListName;
     private List<ListItem> itemList;
     private Button btn_saveList;
+    private TextView textview_logout;
+    private SearchView search_view;
 
     private AlertDialog alertDialog;
     private AlertDialog.Builder builder;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseUser user;
+
+    //Connection to Firebase Database
+    FirebaseDatabase db = FirebaseDatabase.getInstance();
+
+    DatabaseReference databaseReference = db.getReference("Users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+
         recyclerViewList = findViewById(R.id.recyclerViewList);
         recyclerViewList.setHasFixedSize(true);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
 
-        itemList = new ArrayList<>();
 
-        recyclerViewListAdapter = new RecyclerViewListAdapter(this, itemList);
-        recyclerViewList.setAdapter(recyclerViewListAdapter);
+        String currentId = user.getUid();
+
+        itemList = new ArrayList<>();
+        databaseReference.child(currentId).child("List")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        itemList.clear();
+                        for (DataSnapshot lists : snapshot.getChildren()) {
+                            ListItem item = lists.getValue(ListItem.class);
+                            itemList.add(0, item);
+                        }
+
+                        recyclerViewListAdapter = new RecyclerViewListAdapter(ListActivity.this, itemList);
+                        recyclerViewList.setAdapter(recyclerViewListAdapter);
+                        recyclerViewListAdapter.notifyItemInserted(0);
+                        recyclerViewList.smoothScrollToPosition(0);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         //Drag and Drop Reorder items
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerViewList);
+
+        textview_logout = findViewById(R.id.textview_logout);
+        textview_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user != null && firebaseAuth != null) {
+                    firebaseAuth.signOut();
+
+                    startActivity(new Intent(ListActivity.this, MainActivity.class));
+                    finish();
+                }
+            }
+        });
 
         Button btn_createList = findViewById(R.id.btn_createList);
         btn_createList.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +122,53 @@ public class ListActivity extends AppCompatActivity {
                 createPopDialog();
             }
         });
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+
+                } else {
+
+                }
+            }
+        };
+
+        search_view = findViewById(R.id.search_view);
+        search_view.setQueryHint(Html.fromHtml("<font color = #ffffff>" + getResources().getString(R.string.hintSearchMess) + "</font>"));
+        int id = search_view.getContext()
+                .getResources()
+                .getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) search_view.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+        search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                recyclerViewListAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        user = firebaseAuth.getCurrentUser();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (firebaseAuth != null) {
+            firebaseAuth.removeAuthStateListener(authStateListener);
+        }
     }
 
     private void createPopDialog() {
@@ -73,7 +184,7 @@ public class ListActivity extends AppCompatActivity {
         btn_saveList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!itemListName.getText().toString().isEmpty()) {
+                if (!TextUtils.isEmpty(itemListName.getText().toString())) {
                     saveItem(v);
                 } else {
                     Snackbar.make(v, "Empty Field not Allowed!", Snackbar.LENGTH_SHORT).show();
@@ -84,25 +195,37 @@ public class ListActivity extends AppCompatActivity {
 
     private void saveItem(View view) {
 
-        ListItem item = new ListItem();
-
         String newItemNOL = itemListName.getText().toString().trim();
 
-        item.setListName(newItemNOL);
-        itemList.add(0, item);
-        recyclerViewListAdapter.notifyItemInserted(0);
-        recyclerViewList.smoothScrollToPosition(0);
+        String currentId = user.getUid();
 
-        alertDialog.dismiss();
+        ListItem item = new ListItem();
+        item.setListName(newItemNOL);
+        String listId = databaseReference.child(currentId).child("List").push().getKey();
+        item.setListId(listId);
+
+        databaseReference.child(currentId).child("List")
+                .child(listId).setValue(item)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        alertDialog.dismiss();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("ListActivity", "onFailure: " + e.getMessage());
+
+                    }
+                });
 
     }
 
-    ListItem deletedItem = null;
     ListItem newItem = null;
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP
-            | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END,
-            ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
@@ -122,21 +245,6 @@ public class ListActivity extends AppCompatActivity {
             int position = viewHolder.getAdapterPosition();
 
             switch (direction) {
-                case ItemTouchHelper.LEFT:
-                    deletedItem = itemList.get(position);
-                    itemList.remove(deletedItem);
-                    recyclerViewListAdapter.notifyItemRemoved(position);
-                    String nameList = deletedItem.getListName();
-                    Snackbar.make(recyclerViewList, nameList + " DELETED", Snackbar.LENGTH_LONG)
-                            .setAction("Undo", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    itemList.add(position, deletedItem);
-                                    recyclerViewListAdapter.notifyItemInserted(position);
-                                }
-                            }).show();
-                    break;
-
                 case ItemTouchHelper.RIGHT:
                     newItem = itemList.get(position);
 
@@ -162,18 +270,16 @@ public class ListActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             //update our item
                             newItem.setListName(itemListName.getText().toString());
+                            newItem.setListId(newItem.getListId());
+
+                            String currentId = user.getUid();
 
                             if (!itemListName.getText().toString().isEmpty()) {
-//                                recyclerViewListAdapter.notifyItemChanged(position,newItem);
+                                databaseReference.child(currentId).child("List")
+                                        .child(newItem.getListId()).setValue(newItem);
+                                recyclerViewListAdapter.notifyItemChanged(position);
 
-                                itemList.remove(newItem);
-                                recyclerViewListAdapter.notifyItemRemoved(position);
-
-                                itemList.add(position, newItem);
-                                recyclerViewListAdapter.notifyItemInserted(position);
                                 alertDialog.dismiss();
-
-                                Snackbar.make(view, "Updated done", Snackbar.LENGTH_SHORT).show();
                             } else {
                                 Snackbar.make(view, "Field Empty", Snackbar.LENGTH_SHORT).show();
                             }

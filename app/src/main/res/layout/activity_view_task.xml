@@ -69,7 +69,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/dateAdded"
+            android:id="@+id/timeAdded"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dets_taskName"
@@ -83,7 +83,7 @@
             android:id="@+id/view_rec"
             android:layout_width="wrap_content"
             android:layout_height="3dp"
-            android:layout_below="@+id/dateAdded"
+            android:layout_below="@+id/timeAdded"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="16dp"
@@ -125,6 +125,7 @@
             android:inputType="textMultiLine" />
 
         <TextView
+            android:id="@+id/textview_deleteTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"

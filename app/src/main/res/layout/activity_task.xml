@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,14 +15,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="10dp"
         android:padding="15dp">
-
-        <androidx.appcompat.widget.SearchView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:textColor="#FFFF"
-            app:searchIcon="@drawable/ic_baseline_search_24" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,6 +34,20 @@
 
     </RelativeLayout>
 
+    <SearchView
+        android:id="@+id/search_viewTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativelayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edit_text"
+        android:queryHint="Search"
+        android:searchIcon="@drawable/ic_baseline_search_24"
+        android:searchHintIcon="@drawable/ic_baseline_search_24" />
+
     <TextView
         android:id="@+id/dets_listName"
         android:layout_width="wrap_content"
@@ -50,7 +55,7 @@
         android:text="List Name"
         android:textColor="#FFFF"
         android:textSize="25sp"
-        android:layout_below="@+id/relativelayout2"
+        android:layout_below="@+id/search_viewTask"
         android:layout_marginTop="40dp"
         android:textStyle="bold"
         android:layout_marginLeft="16dp"
@@ -64,7 +69,7 @@
         android:text="Delete"
         android:textSize="20sp"
         android:textColor="#80FFFFFF"
-        android:layout_below="@+id/relativelayout2"
+        android:layout_below="@+id/search_viewTask"
         android:layout_marginTop="43dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"/>

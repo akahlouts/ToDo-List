@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,14 +21,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import util.ToDoListApi;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,8 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser currentUser;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("Users");
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = db.getReference("Users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,25 +84,21 @@ public class LoginActivity extends AppCompatActivity {
                                 String currentUserId = user.getUid();
                                 Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
 
-                                collectionReference
-                                        .whereEqualTo("userId", currentUserId)
-                                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                databaseReference
+                                        .addValueEventListener(new ValueEventListener() {
                                             @Override
-                                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
-                                                                @Nullable FirebaseFirestoreException e) {
-                                                if (e != null) {
-                                                }
-                                                if (!queryDocumentSnapshots.isEmpty()) {
-                                                    for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
-                                                        ToDoListApi toDoListApi = ToDoListApi.getInstance();
-                                                        toDoListApi.setUsername(snapshot.getString("username"));
-                                                        toDoListApi.setUserId(snapshot.getString("userId"));
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot snap : snapshot.getChildren()) {
 
-                                                        //Go to ListActivity
-                                                        startActivity(new Intent(LoginActivity.this,
-                                                                ListActivity.class));
-                                                    }
+                                                    //Go to ListActivity
+                                                    startActivity(new Intent(LoginActivity.this,
+                                                            ListActivity.class));
                                                 }
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
 
                                             }
                                         });

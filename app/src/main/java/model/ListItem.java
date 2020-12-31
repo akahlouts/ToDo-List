@@ -1,13 +1,18 @@
-package com.akahlouts.todo_list.model;
+package model;
 
 public class ListItem {
     private String listName;
+    private String listId;
 
     public ListItem() {
     }
 
-    public ListItem(String listName) {
-        this.listName = listName;
+    public String getListId() {
+        return listId;
+    }
+
+    public void setListId(String listId) {
+        this.listId = listId;
     }
 
     public String getListName() {
@@ -17,4 +22,5 @@ public class ListItem {
     public void setListName(String listName) {
         this.listName = listName;
     }
+
 }

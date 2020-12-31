@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,6 +17,7 @@
         android:layout_marginTop="10dp">
 
         <TextView
+            android:id="@+id/textview_logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -45,16 +45,20 @@
     </RelativeLayout>
 
 
-    <androidx.appcompat.widget.SearchView
+    <SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativelayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/edit_text"
-        app:queryHint="Search"
-        app:searchIcon="@drawable/ic_baseline_search_24" />
+        android:queryHint="Search"
+
+        android:searchIcon="@drawable/ic_baseline_search_24"
+        android:searchHintIcon="@drawable/ic_baseline_search_24" />
 
     <TextView
         android:id="@+id/textview_list"
