@@ -44,6 +44,8 @@ public class ViewTaskActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser user;
 
+    private ViewTask viewTask;
+
     //Connection to Firestore
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
 
@@ -54,12 +56,12 @@ public class ViewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
 
+        viewTask = new ViewTask();
+
         dets_description = findViewById(R.id.dets_description);
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-
-        ViewTask viewTask = new ViewTask();
 
         TextView detsTaskName = findViewById(R.id.dets_taskName);
         timeAdded = findViewById(R.id.timeAdded);
@@ -76,14 +78,13 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         String currentId = user.getUid();
 
-
-        databaseReference.child(currentId).child("List").child(listId)
-                .child("Task").child(taskId).child("ViewTask")
+        databaseReference.child(currentId).child("List").child(listId).child("Task")
+                .child(taskId).child("Description")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            dets_description.setText(snapshot.getValue().toString());
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            dets_description.setText(dataSnapshot.getValue().toString());
                         }
                     }
 
@@ -93,97 +94,50 @@ public class ViewTaskActivity extends AppCompatActivity {
                     }
                 });
 
+        dets_description.setEnabled(false);
 
         textview_edit = findViewById(R.id.textview_edit);
-
-        dets_description.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        textview_edit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (!(actionId == EditorInfo.IME_ACTION_PREVIOUS)) {
+            public void onClick(View v) {
+                dets_description.setEnabled(true);
+            }
+        });
 
-                    dets_description.setEnabled(true);
 
-                        String newDescription = dets_description.getText().toString().trim();
+        dets_description.setOnEditorActionListener(new EditText.OnEditorActionListener() {
 
-                    String viewTaskId = databaseReference.child(currentId).child("List").child(listId)
-                            .child("Task").child(taskId).child("ViewTask").push().getKey();
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER
+                        || actionId == EditorInfo.IME_ACTION_DONE) {
+                    String newDescription = dets_description.getText().toString().trim();
 
-                        viewTask.setDescription(newDescription);
-                        viewTask.setViewTaskId(viewTaskId);
+                    viewTask.setDescription(newDescription);
 
                     databaseReference.child(currentId).child("List").child(listId).child("Task")
-                                .child(taskId).child("ViewTask")
-                                .child(viewTaskId).setValue(viewTask);
-                }else{
-                    Toast.makeText(ViewTaskActivity.this, "Hello", Toast.LENGTH_SHORT).show();
+                            .child(taskId).child("Description")
+                            .child("description").setValue(viewTask.getDescription());
+                    return true;
                 }
                 return false;
             }
         });
 
 
-//            if (!dets_description.getText().toString().isEmpty()) {
-//
-//                textview_edit.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dets_description.setEnabled(true);
-//                    }
-//                });
-//            } else {
-//
-//                dets_description.addTextChangedListener(new TextWatcher() {
-//                    @Override
-//                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                        dets_description.setEnabled(true);
-//
-//                        String newDescription = dets_description.getText().toString().trim();
-//
-//                        ViewTask viewTask = new ViewTask();
-//                        viewTask.setDescription(newDescription);
-//                        viewTask.setViewTaskId(viewTaskId);
-//
-//                        databaseReference.child(currentId).child("List").child(listId).child("Task")
-//                                .child(taskId).child("ViewTask")
-//                                .child(viewTaskId).setValue(viewTask);
-//
-//                    }
-//
-//                    @Override
-//                    public void afterTextChanged(Editable s) {
-//
-//                    }
-//                });
-//
-//            }
-//
-//        databaseReference.child(currentId).child("List").child(listId)
-//                .child("Task").child(taskId).child("ViewTask")
-//                .addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        ViewTask value  = snapshot.getValue(ViewTask.class);
-//                        dets_description.setText(value.getDescription());
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-//
-
-
         back_viewTask = findViewById(R.id.back_viewTask);
         back_viewTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String newDescription = dets_description.getText().toString().trim();
+
+                viewTask.setDescription(newDescription);
+
+                databaseReference.child(currentId).child("List").child(listId).child("Task")
+                        .child(taskId).child("Description")
+                        .child("description").setValue(viewTask.getDescription());
+
                 finish();
             }
         });

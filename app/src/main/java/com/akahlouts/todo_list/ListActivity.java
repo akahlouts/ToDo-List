@@ -45,6 +45,7 @@ public class ListActivity extends AppCompatActivity {
     private EditText itemListName;
     private List<ListItem> itemList;
     private Button btn_saveList;
+    private TextView back_list;
     private TextView textview_logout;
     private SearchView search_view;
 
@@ -71,6 +72,15 @@ public class ListActivity extends AppCompatActivity {
         recyclerViewList = findViewById(R.id.recyclerViewList);
         recyclerViewList.setHasFixedSize(true);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
+
+        back_list = findViewById(R.id.back_list);
+        back_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ListActivity.this,LoginActivity.class));
+                finish();
+            }
+        });
 
 
         String currentId = user.getUid();
@@ -109,7 +119,7 @@ public class ListActivity extends AppCompatActivity {
                 if (user != null && firebaseAuth != null) {
                     firebaseAuth.signOut();
 
-                    startActivity(new Intent(ListActivity.this, MainActivity.class));
+                    startActivity(new Intent(ListActivity.this, LoginActivity.class));
                     finish();
                 }
             }
@@ -276,12 +286,13 @@ public class ListActivity extends AppCompatActivity {
 
                             if (!itemListName.getText().toString().isEmpty()) {
                                 databaseReference.child(currentId).child("List")
-                                        .child(newItem.getListId()).setValue(newItem);
+                                        .child(newItem.getListId()).child("listName")
+                                        .setValue(newItem.getListName());
                                 recyclerViewListAdapter.notifyItemChanged(position);
 
                                 alertDialog.dismiss();
                             } else {
-                                Snackbar.make(view, "Field Empty", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "Field is Empty", Snackbar.LENGTH_SHORT).show();
                             }
                         }
                     });

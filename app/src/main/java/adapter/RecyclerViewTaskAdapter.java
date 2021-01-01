@@ -73,7 +73,7 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
 
                 FirebaseDatabase.getInstance().getReference("Users").child(currentId)
                         .child("List").child(taskEntity.getListId()).child("Task").child(taskEntity.getTaskId())
-                        .setValue(newTask);
+                        .child("isChecked").setValue(newTask.getIsChecked());
 
                 taskEntity.setIsChecked(isChecked);
                 viewHolder.checkBox.setSelected(isChecked);

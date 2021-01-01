@@ -348,12 +348,13 @@ public class TaskActivity extends AppCompatActivity {
 
                                 databaseReference.child(currentId).child("List")
                                         .child(newItem.getListId()).child("Task")
-                                        .child(newItem.getTaskId()).setValue(newItem);
+                                        .child(newItem.getTaskId())
+                                        .child("taskName").setValue(newItem.getTaskName());
                                 recyclerViewTaskAdapter.notifyItemChanged(position);
                                 alertDialog.dismiss();
 
                             } else {
-                                Snackbar.make(view, "Field Empty", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "Field is Empty", Snackbar.LENGTH_SHORT).show();
 
                             }
                         }

@@ -35,6 +35,7 @@
                 android:background="@drawable/edit_text"
                 android:hint="List Name"
                 android:padding="18dp"
+                android:maxLines="1"
                 android:textColor="#FFFF"
                 android:textColorHint="#80FFFFFF"/>
 
